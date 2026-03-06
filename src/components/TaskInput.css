@@ -1,0 +1,26 @@
+.task-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.task-input-field {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.task-input-add {
+  background: #2d7df4;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.task-input-add:hover {
+  background: #1f5ec0;
+}
