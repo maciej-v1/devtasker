@@ -7,16 +7,16 @@ export default function TaskList({ items, onToggle, onDelete }) {
 
   return (
     <ul className="task-list">
-      {items.map((t) => (
-        <li key={t.id} className="task-item">
+      {items.map(task => (
+        <li key={task.id} className="task-item">
           <input
             type="checkbox"
-            checked={t.done}
-            onChange={() => onToggle(t.id)}
-            aria-label={`Mark "${t.title}" as ${t.done ? 'todo' : 'done'}`}
+            checked={task.done}
+            onChange={() => onToggle(task.id)}
+            aria-label={`Mark "${task.title}" as ${task.done ? 'todo' : 'done'}`}
           />
-          <span className={`task-title${t.done ? ' done' : ''}`}>{t.title}</span>
-          <button className="task-delete" onClick={() => onDelete(t.id)}>
+          <span className={`task-title${task.done ? ' done' : ''}`}>{task.title}</span>
+          <button className="task-delete" onClick={() => onDelete(task.id)}>
             Delete
           </button>
         </li>

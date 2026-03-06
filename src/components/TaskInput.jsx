@@ -4,7 +4,7 @@ import './TaskInput.css'
 export default function TaskInput({ onAdd }) {
   const [title, setTitle] = useState('')
 
-  const submit = (e) => {
+  const submit = e => {
     e.preventDefault()
     const trimmed = title.trim()
     if (!trimmed) return
@@ -17,7 +17,7 @@ export default function TaskInput({ onAdd }) {
       <input
         className="task-input-field"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={e => setTitle(e.target.value)}
         placeholder="Add a task…"
         aria-label="Task title"
       />
