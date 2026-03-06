@@ -8,16 +8,15 @@
   flex: 1;
   padding: 0.5rem 0.75rem;
   border: 1px solid #bbb;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 6px;
 }
 
 .task-input-add {
   background: #2d7df4;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  color: #fff;
+  border: 1px solid transparent;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
   cursor: pointer;
 }
 

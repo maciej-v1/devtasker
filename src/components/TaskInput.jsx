@@ -19,6 +19,7 @@ export default function TaskInput({ onAdd }) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a task…"
+        aria-label="Task title"
       />
       <button className="task-input-add" type="submit">
         Add

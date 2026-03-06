@@ -13,10 +13,9 @@ export default function TaskList({ items, onToggle, onDelete }) {
             type="checkbox"
             checked={t.done}
             onChange={() => onToggle(t.id)}
+            aria-label={`Mark "${t.title}" as ${t.done ? 'todo' : 'done'}`}
           />
-          <span className={t.done ? 'task-title done' : 'task-title'}>
-            {t.title}
-          </span>
+          <span className={`task-title${t.done ? ' done' : ''}`}>{t.title}</span>
           <button className="task-delete" onClick={() => onDelete(t.id)}>
             Delete
           </button>

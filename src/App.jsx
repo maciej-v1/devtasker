@@ -7,20 +7,15 @@ export default function App() {
   const [tasks, setTasks] = useState([])
 
   const addTask = (title) => {
-    setTasks((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), title, done: false }
-    ])
+    setTasks(prev => [...prev, { id: crypto.randomUUID(), title, done: false }])
   }
 
   const toggleTask = (id) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
-    )
+    setTasks(prev => prev.map(t => (t.id === id ? { ...t, done: !t.done } : t)))
   }
 
   const deleteTask = (id) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id))
+    setTasks(prev => prev.filter(t => t.id !== id))
   }
 
   return (
