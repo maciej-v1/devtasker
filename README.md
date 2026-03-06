@@ -1,16 +1,88 @@
-# React + Vite
+# DevTasker
+A project‑based React learning application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DevTasker is a small but steadily evolving task‑management app built with React + Vite.
+Its purpose is not to be a production product, but a learning environment — a place to understand React deeply by building a real application from scratch, feature by feature.
 
-Currently, two official plugins are available:
+Unlike tutorial snippets or demo apps, DevTasker grows iteratively, through exploration, refactoring, and deliberate practice.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Purpose of the Project
+This project exists to:
+- Learn React by building, not by copying.
+- Understand core React concepts in context.
+- Practice component-driven development.
+- Explore state, effects, props, and data flow.
+- Build maintainable architecture step-by-step.
+- Gain real-world experience with:
+  - localStorage persistence
+  - custom hooks
+  - component composition
+  - clean CSS separation
+  - state lifting and propagation
 
-## React Compiler
+## Current Features
+- Add tasks
+- Mark tasks as completed
+- Delete tasks
+- Persistent storage using localStorage
+- Clean component structure
+- CSS‑based styling (no inline styles)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## What Has Been Learned So Far
+- React components & props
+- State management via useState
+- Controlled inputs
+- Rendering lists with keys
+- Proper handling of event callbacks
+- Avoiding common anti‑patterns
+- Using useEffect correctly for side effects
+- Separating concerns into modules
+- Implementing persistence cleanly
 
-## Expanding the ESLint configuration
+## Tech Stack
+- React – UI rendering and component logic
+- Vite – modern dev environment and bundler
+- JavaScript (ES202x) – modern syntax & practices
+- CSS – scoped styling via per‑component stylesheet files
+- localStorage – client‑side task persistence
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Upcoming Learning Steps
+- Custom hooks (useTasks)
+- Derived state & memoization
+- Context API for global state
+- React Router (multi‑page app structure)
+- Data fetching & loading states
+- Cleaner component architecture
+- UI refinements and reusable patterns
+
+## Project Structure (Simplified)
+```
+src/
+  components/
+    TaskInput.jsx
+    TaskInput.css
+    TaskList.jsx
+    TaskList.css
+    TaskPersistence.js
+  hooks/
+    (future custom hooks here)
+  App.jsx
+  App.css
+  index.css
+```
+
+## Project Philosophy
+Most online courses teach React using isolated code snippets or artificial examples.
+DevTasker takes the opposite approach:
+
+Build something real. Break things. Fix them.
+Learn React the way working developers do.
+
+## Running the Project
+Install dependencies:
+    npm install
+
+Start the development server:
+    npm run dev
+
+The app will be available at: http://localhost:5173/
