@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import './TaskInput.css'
 
-export default function TaskInput({ onAdd }) {
+const TaskInput = ({ onAdd }) => {
   const [title, setTitle] = useState('')
 
   const submit = e => {
@@ -27,3 +27,5 @@ export default function TaskInput({ onAdd }) {
     </form>
   )
 }
+
+export default React.memo(TaskInput);

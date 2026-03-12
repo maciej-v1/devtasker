@@ -1,34 +1,28 @@
+import React from 'react'
 import './TaskList.css'
+import TaskItem from './TaskItem'
+import { compareTaskListProps } from '../utils/taskComparators'
 
-export default function TaskList({ items, onToggle, onDelete }) {
-  if (items.length === 0) {
+const TaskList = ({ tasks, onToggle, onDelete }) => {
+  if (tasks.length === 0) {
     return <p className="empty-state">No tasks yet.</p>
-  }
-
-  const handleToggle = id => {
-    onToggle(id);
-  }
-
-  const handleDelete = id => {
-    onDelete(id);
   }
 
   return (
     <ul className="task-list">
-      {items.map(task => (
-        <li key={task.id} className="task-item">
-          <input
-            type="checkbox"
-            checked={task.done}
-            onChange={() => handleToggle(task.id)}
-            aria-label={`Mark "${task.title}" as ${task.done ? 'todo' : 'done'}`}
+      {tasks.map(task => {
+
+        return (
+          <TaskItem
+            key={task.id}
+            task={task}
+            onToggle={onToggle}
+            onDelete={onDelete}
           />
-          <span className={`task-title${task.done ? ' done' : ''}`}>{task.title}</span>
-          <button className="task-delete" onClick={() => handleDelete(task.id)}>
-            Delete
-          </button>
-        </li>
-      ))}
+        );
+      })}
     </ul>
   )
 }
+
+export default React.memo(TaskList, compareTaskListProps)
