@@ -5,6 +5,14 @@ export default function TaskList({ items, onToggle, onDelete }) {
     return <p className="empty-state">No tasks yet.</p>
   }
 
+  const handleToggle = id => {
+    onToggle(id);
+  }
+
+  const handleDelete = id => {
+    onDelete(id);
+  }
+
   return (
     <ul className="task-list">
       {items.map(task => (
@@ -12,11 +20,11 @@ export default function TaskList({ items, onToggle, onDelete }) {
           <input
             type="checkbox"
             checked={task.done}
-            onChange={() => onToggle(task.id)}
+            onChange={() => handleToggle(task.id)}
             aria-label={`Mark "${task.title}" as ${task.done ? 'todo' : 'done'}`}
           />
           <span className={`task-title${task.done ? ' done' : ''}`}>{task.title}</span>
-          <button className="task-delete" onClick={() => onDelete(task.id)}>
+          <button className="task-delete" onClick={() => handleDelete(task.id)}>
             Delete
           </button>
         </li>

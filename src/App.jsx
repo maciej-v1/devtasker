@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
 import TaskInput from './components/TaskInput.jsx'
 import TaskList from './components/TaskList.jsx'
-import { getTasks, saveTasks, TASKS_KEY_NAME } from './components/TaskPersistence.js';
 import './App.css'
+import { useTaskStorage } from './hooks/useTaskStorage.js';
+import { TASKS_KEY_NAME } from './constants/storage.js';
 
 export default function App() {
-  const [tasks, setTasks] = useState(() => getTasks());
+  const [tasks, setTasks] = useTaskStorage(TASKS_KEY_NAME, [])
 
   const addTask = title => {
     setTasks(prev => [...prev, { id: crypto.randomUUID(), title, done: false }]);
@@ -18,13 +18,6 @@ export default function App() {
   const deleteTask = id => {
     setTasks(prev => prev.filter(task => task.id !== id))
   }
-
-  useEffect(() => {
-    // Read once and compare to avoid redundant writes
-    const snapshot = localStorage.getItem(TASKS_KEY_NAME);
-    const serialised = JSON.stringify(tasks);
-    if (snapshot !== serialised) saveTasks(tasks);
-  }, [tasks]);
 
   return (
     <main className="app">
