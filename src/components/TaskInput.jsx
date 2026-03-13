@@ -1,23 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import './TaskInput.css'
 
 const TaskInput = ({ onAdd }) => {
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('');
 
-  const submit = e => {
-    e.preventDefault()
-    const trimmed = title.trim()
-    if (!trimmed) return
-    onAdd(trimmed)
-    setTitle('')
-  }
+  const handleChange = useCallback((e) => {
+    setTitle(e.target.value);
+  }, []);
+
+  const submit = useCallback((e) => {
+    e.preventDefault();
+    const trimmed = title.trim();
+    if (!trimmed) return;
+    onAdd(trimmed);
+    setTitle('');
+  }, [title, onAdd]);
 
   return (
     <form className="task-input" onSubmit={submit}>
       <input
         className="task-input-field"
         value={title}
-        onChange={e => setTitle(e.target.value)}
+        onChange={handleChange}
         placeholder="Add a task…"
         aria-label="Task title"
       />
@@ -25,7 +29,7 @@ const TaskInput = ({ onAdd }) => {
         Add
       </button>
     </form>
-  )
-}
+  );
+};
 
 export default React.memo(TaskInput);

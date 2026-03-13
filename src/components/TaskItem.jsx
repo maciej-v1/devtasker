@@ -1,23 +1,34 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 const TaskItem = ({ task, onToggle, onDelete }) => {
-  const handleToggle = () => onToggle(task.id);
-  const handleDelete = () => onDelete(task.id);
+  const handleToggle = useCallback(() => {
+    onToggle(task.id);
+  }, [task.id, onToggle]);
+
+  const handleDelete = useCallback(() => {
+    onDelete(task.id);
+  }, [task.id, onDelete]);
+
+  const safeTitle = task.title.replace(/"/g, '\\"');
 
   return (
-    <li className="task-item" data-task-id={task.id}>
+    <li
+      role="listitem"
+      className="task-item"
+      data-task-id={task.id}
+    >
       <input
         type="checkbox"
         checked={task.done}
         onChange={handleToggle}
-        aria-label={`Mark "${task.title}" as ${task.done ? 'todo' : 'done'}`}
+        aria-label={`Mark "${safeTitle}" as ${task.done ? 'todo' : 'done'}`}
       />
 
       <span className={`task-title${task.done ? ' done' : ''}`}>
         {task.title}
       </span>
 
-      <button className="task-delete" onClick={handleDelete}>
+      <button type="button" className="task-delete" onClick={handleDelete}>
         Delete
       </button>
     </li>

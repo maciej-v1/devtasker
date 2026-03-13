@@ -1,88 +1,189 @@
-# DevTasker
-A project‑based React learning application
+# 📘 DevTasker  
+*A real‑world React learning application built through deliberate practice.*
 
-DevTasker is a small but steadily evolving task‑management app built with React + Vite.
-Its purpose is not to be a production product, but a learning environment — a place to understand React deeply by building a real application from scratch, feature by feature.
+DevTasker is an evolving task‑management app built with **React + Vite**.  
+Its purpose is educational: to learn React by building a real application step‑by‑step, refactoring it and improving the architecture as it grows.
 
-Unlike tutorial snippets or demo apps, DevTasker grows iteratively, through exploration, refactoring, and deliberate practice.
+Unlike tutorials that rely on isolated snippets, DevTasker is built through **iteration, exploration, and real engineering reasoning.**
 
-## Purpose of the Project
-This project exists to:
-- Learn React by building, not by copying.
-- Understand core React concepts in context.
-- Practice component-driven development.
-- Explore state, effects, props, and data flow.
-- Build maintainable architecture step-by-step.
-- Gain real-world experience with:
-  - localStorage persistence
-  - custom hooks
-  - component composition
-  - clean CSS separation
-  - state lifting and propagation
+---
 
-## Current Features
-- Add tasks
-- Mark tasks as completed
-- Delete tasks
-- Persistent storage using localStorage
-- Clean component structure
-- CSS‑based styling (no inline styles)
+# 🎯 Purpose of the Project
 
-## What Has Been Learned So Far
-- React components & props
-- State management via useState
-- Controlled inputs
-- Rendering lists with keys
-- Proper handling of event callbacks
-- Avoiding common anti‑patterns
-- Using useEffect correctly for side effects
-- Separating concerns into modules
-- Implementing persistence cleanly
+DevTasker exists to:
 
-## Tech Stack
-- React – UI rendering and component logic
-- Vite – modern dev environment and bundler
-- JavaScript (ES202x) – modern syntax & practices
-- CSS – scoped styling via per‑component stylesheet files
-- localStorage – client‑side task persistence
+- Learn React by building a real system, not by copying snippets  
+- Understand React concepts in their natural context  
+- Develop component-driven architecture skills  
+- Practice designing maintainable, scalable front‑end code  
+- Build clean logic using custom hooks and domain patterns  
+- Learn how state, effects, and reactivity truly work  
 
-## Upcoming Learning Steps
-- Custom hooks (useTasks)
-- Derived state & memoization
-- Context API for global state
-- React Router (multi‑page app structure)
-- Data fetching & loading states
-- Cleaner component architecture
-- UI refinements and reusable patterns
+---
 
-## Project Structure (Simplified)
+# ✅ Current Features
+
+### ✔ Core task functionality
+- Add tasks  
+- Mark tasks as done / not done  
+- Delete tasks  
+- Prevent duplicate tasks (case‑insensitive)  
+- Persistent storage via localStorage  
+- Clean separation between UI, storage, and domain logic  
+
+### ✔ Architecture & performance
+- `useStorage` — generic persistent state hook  
+- `useTaskStorage` — domain‑specific storage wrapper  
+- `useTasks` — complete domain API (add, toggle, delete)  
+- Early‑exit state updates to prevent unnecessary renders  
+- Stable callbacks with `useCallback`  
+- React.memo at list and item level  
+- Stable item-level handlers  
+- Clean and predictable component tree  
+
+### ✔ Accessibility & UX
+- Proper list semantics (`<ul>`, `<li>`, roles)  
+- Safe ARIA labels (quote‑safe)  
+- `type="button"` for non-submit buttons  
+- Keyboard‑friendly input  
+- Consistent empty-state inside the `<ul>` structure  
+
+---
+
+# 🧠 What Has Been Learned So Far
+
+### **Core React**
+- Components, props, JSX  
+- Controlled inputs  
+- Rendering lists with keys  
+- Event handlers done right  
+- Avoiding unnecessary re-renders  
+
+### **Hooks**
+- `useState`, `useEffect`, `useCallback`, `useMemo`, `useRef`  
+- Patterns for stable callbacks  
+- Custom hooks for domain logic and storage  
+- Handling localStorage safely  
+- Memoization at list and item level  
+
+### **Architecture**
+- Domain-driven UI design  
+- Clean separation:
+  - storage layer  
+  - domain logic layer  
+  - UI layer  
+- Avoiding tight coupling  
+- Structuring components for scale  
+
+### **Accessibility**
+- ARIA labels  
+- Proper list semantics  
+- Safe escaping in labels  
+- Buttons that behave predictably in forms  
+
+---
+
+# 🛠 Tech Stack
+
+- **React** — component logic & rendering  
+- **Vite** — dev environment & bundler  
+- **JavaScript (ES202x)**  
+- **CSS** — component-scoped styling  
+- **localStorage** — client‑side persistence (via `useStorage`)  
+
+---
+
+# 📁 Project Structure (Accurate to Current Code)
+
 ```
 src/
   components/
     TaskInput.jsx
     TaskInput.css
+    TaskItem.jsx
     TaskList.jsx
     TaskList.css
-    TaskPersistence.js
+
   hooks/
-    (future custom hooks here)
+    useStorage.js
+    useTaskStorage.js
+    useTasks.js
+
+  constants/
+    storage.js
+
+  storage/
+    storage.js
+
   App.jsx
   App.css
   index.css
 ```
 
-## Project Philosophy
-Most online courses teach React using isolated code snippets or artificial examples.
-DevTasker takes the opposite approach:
+---
 
-Build something real. Break things. Fix them.
-Learn React the way working developers do.
+# 🚀 Upcoming Learning Steps
 
-## Running the Project
+Following the project‑based training plan:
+
+### **Phase 3 — API & async logic**
+- Switch from localStorage → backend persistence  
+- Loading & error states  
+- Optimistic updates  
+
+### **Phase 4 — Routing**
+- Multi-page layout  
+- Task detail pages  
+- Settings screens  
+
+### **Phase 5 — Global state**
+- Context API  
+- Zustand store (optional)  
+
+### **Phase 6 — UI & UX**
+- Animations  
+- Filters (completed / active / all)  
+- Sorting (alphabetical, creation date)  
+- Editing tasks inline  
+
+### **Phase 7 — Deployment**
+- Production build  
+- Deploy to Netlify / Vercel  
+- Environment configs  
+
+---
+
+# 🏗 Project Philosophy  
+Most tutorials teach React through oversimplified examples.
+
+DevTasker does the opposite:
+
+> **Build something real.  
+Break it.  
+Fix it.  
+Refactor it.  
+Understand it deeply.**
+
+This is how actual engineers master React.
+
+---
+
+# ▶ Running the Project
+
 Install dependencies:
-    npm install
 
-Start the development server:
-    npm run dev
+```sh
+npm install
+```
 
-The app will be available at: http://localhost:5173/
+Start development server:
+
+```sh
+npm run dev
+```
+
+App runs at:
+
+```
+http://localhost:5173/
+```

@@ -1,12 +1,6 @@
-import { useState, useEffect } from "react";
-import { load, save } from "../storage/storage";
+import { useStorage } from "./useStorage";
+import { TASKS_KEY_NAME } from "../constants/storage";
 
-export const useTaskStorage = (key, defaultValue = []) => {
-  const [value, setValue] = useState(() => load(key, defaultValue));
-
-  useEffect(() => {
-    save(key, value);
-  }, [key, value]);
-
-  return [value, setValue];
+export const useTaskStorage = () => {
+  return useStorage(TASKS_KEY_NAME, []);
 };
