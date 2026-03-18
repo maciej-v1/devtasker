@@ -1,6 +1,11 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { nanoid } from 'nanoid';
 import { useTaskStorage } from './useTaskStorage';
+import {
+  normalizeTitle,
+  normalizeForComparison,
+  isEmptyTitle
+} from '../utils/taskNormalization.js';
 
 /**
  * Domain hook for all task operations.
@@ -10,53 +15,67 @@ export const useTasks = () => {
   const [tasks, setTasks] = useTaskStorage();
 
   const addTask = useCallback(title => {
-    // Avoid adding empty/whitespace-only tasks
-    const trimmed = title.trim();
-    if (!trimmed) return;
+    const trimmed = normalizeTitle(title);
+    if (isEmptyTitle(trimmed)) {
+      return { ok: false, reason: 'empty' };
+    }
 
-    const normalized = trimmed.toLowerCase();
+    const normalized = normalizeForComparison(trimmed);
+
+    let duplicate = false;
 
     setTasks(tasks => {
-      // Early exit if a duplicate already exists (case-insensitive)
       const exists = tasks.some(task => task.title.toLowerCase() === normalized);
-      if (exists) return tasks;
+      if (exists) {
+        duplicate = true;
+        return tasks;
+      }
 
-      const updatedTasks = [
+      return [
         ...tasks,
-        { id: nanoid(), title: trimmed, done: false },
+        { id: nanoid(), title: trimmed, done: false }
       ];
-      return updatedTasks;
     });
+
+    if (duplicate) {
+      return { ok: false, reason: 'duplicate' };
+    }
+
+    return { ok: true };
   }, []);
 
   const toggleTask = useCallback(id => {
     setTasks(tasks => {
-      let changed = false;
-      const updatedTasks = tasks.map(task => {
-        if (task.id !== id) return task;
-        changed = true;
-        return { ...task, done: !task.done };
-      });
-      return changed ? updatedTasks : tasks; // return the same reference to skip re-render/storage write
+      const exists = tasks.some(task => task.id === id);
+      if (!exists) return tasks;
+
+      return tasks.map(task =>
+        task.id === id
+          ? { ...task, done: !task.done }
+          : task
+      );
     });
   }, []);
 
   const deleteTask = useCallback(id => {
     setTasks(tasks => {
-      const updatedTasks = tasks.filter(task => task.id !== id);
+      const exists = tasks.some(task => task.id === id);
+      if (!exists) return tasks;
 
-      return updatedTasks.length === tasks.length
-        ? tasks // no deletion → skip changes
-        : updatedTasks;
+      return tasks.filter(task => task.id !== id);
     });
   }, []);
 
-  return {
+  const actions = useMemo(() => ({
+    addTask,
+    toggleTask,
+    deleteTask
+  }), [addTask, toggleTask, deleteTask]);
+
+  const taskStore = useMemo(() => ({
     tasks,
-    actions: {
-      addTask,
-      toggleTask,
-      deleteTask
-    }
-  };
+    actions
+  }), [tasks, actions]);
+
+  return taskStore;
 }

@@ -1,6 +1,4 @@
 .task-input {
-  display: flex;
-  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
@@ -22,4 +20,16 @@
 
 .task-input-add:hover {
   background: #1f5ec0;
+}
+
+.task-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.task-input-error {
+  color: #d9534f; /* Bootstrap-like red */
+  font-size: 0.85rem;
+  margin-top: 4px;
 }
