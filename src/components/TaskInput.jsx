@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import './TaskInput.css'
-import { ERROR_MESSAGES } from '../constants/taskErrors.js';
+import { ERROR_MESSAGES } from '../constants/taskErrors';
 
 const TaskInput = ({ onAdd }) => {
   const [title, setTitle] = useState('');

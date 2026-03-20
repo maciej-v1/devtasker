@@ -1,7 +1,7 @@
-import TaskInput from './components/TaskInput.jsx'
-import TaskList from './components/TaskList.jsx'
+import TaskInput from './components/TaskInput'
+import TaskList from './components/TaskList'
 import './App.css'
-import { useTasks } from './hooks/useTasks.js';
+import { useTasks } from './hooks/useTasks';
 
 const App = () => {
   const { tasks, actions } = useTasks();

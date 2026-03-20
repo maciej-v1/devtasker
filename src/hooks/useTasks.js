@@ -1,11 +1,15 @@
-import { useCallback, useMemo } from 'react';
-import { nanoid } from 'nanoid';
+import { useCallback } from 'react';
 import { useTaskStorage } from './useTaskStorage';
 import {
   normalizeTitle,
   normalizeForComparison,
   isEmptyTitle
-} from '../utils/taskNormalization.js';
+} from '../utils/taskNormalization';
+import { createId } from '../utils/id';
+import { TASK_REASONS } from '../constants/taskReasons';
+import { taskExists } from '../domain/taskExists';
+import { ensureValidId } from '../domain/ensureValidId';
+import { taskTitleExists } from '../domain/taskTitleExists';
 
 /**
  * Domain hook for all task operations.
@@ -16,66 +20,63 @@ export const useTasks = () => {
 
   const addTask = useCallback(title => {
     const trimmed = normalizeTitle(title);
-    if (isEmptyTitle(trimmed)) {
-      return { ok: false, reason: 'empty' };
+    if (isEmptyTitle(trimmed)) return { ok: false, reason: TASK_REASONS.EMPTY };
+
+    if (taskTitleExists(tasks, trimmed)) {
+      return { ok: false, reason: TASK_REASONS.DUPLICATE };
     }
 
-    const normalized = normalizeForComparison(trimmed);
 
-    let duplicate = false;
+    const newTask = { id: createId(), title: trimmed, done: false };
 
-    setTasks(tasks => {
-      const exists = tasks.some(task => task.title.toLowerCase() === normalized);
-      if (exists) {
-        duplicate = true;
-        return tasks;
-      }
+    setTasks(tasks => [...tasks, newTask]);
 
-      return [
-        ...tasks,
-        { id: nanoid(), title: trimmed, done: false }
-      ];
-    });
-
-    if (duplicate) {
-      return { ok: false, reason: 'duplicate' };
-    }
-
-    return { ok: true };
-  }, []);
+    return { ok: true, task: newTask };
+  }, [tasks]);
 
   const toggleTask = useCallback(id => {
-    setTasks(tasks => {
-      const exists = tasks.some(task => task.id === id);
-      if (!exists) return tasks;
+    const targetId = ensureValidId(id);
 
-      return tasks.map(task =>
-        task.id === id
-          ? { ...task, done: !task.done }
-          : task
-      );
-    });
-  }, []);
+    if (!taskExists(tasks, targetId)) {
+      return { ok: false, reason: TASK_REASONS.NOT_FOUND };
+    }
+
+    let updatedTask;
+
+    setTasks(tasks =>
+      tasks.map(task => {
+        if (task.id === targetId) {
+          updatedTask = { ...task, done: !task.done };
+          return updatedTask;
+        }
+        return task;
+      })
+    );
+
+    return { ok: true, task: updatedTask };
+  }, [tasks]);
 
   const deleteTask = useCallback(id => {
+    const targetId = ensureValidId(id);
+
+    if (!taskExists(tasks, targetId)) {
+      return { ok: false, reason: TASK_REASONS.NOT_FOUND };
+    }
+
+    let removedTask;
+
     setTasks(tasks => {
-      const exists = tasks.some(task => task.id === id);
-      if (!exists) return tasks;
-
-      return tasks.filter(task => task.id !== id);
+      return tasks.filter(task => {
+        const match = task.id === targetId;
+        if (match) removedTask = task;
+        return !match;
+      });
     });
-  }, []);
 
-  const actions = useMemo(() => ({
-    addTask,
-    toggleTask,
-    deleteTask
-  }), [addTask, toggleTask, deleteTask]);
+    return { ok: true, task: removedTask };
+  }, [tasks]);
 
-  const taskStore = useMemo(() => ({
-    tasks,
-    actions
-  }), [tasks, actions]);
+  const actions = { addTask, toggleTask, deleteTask };
 
-  return taskStore;
+  return { tasks, actions };
 }
