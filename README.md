@@ -1,180 +1,194 @@
-# 📘 DevTasker  
-*A real-world React application built through deliberate practice.*
+# DevTasker
+A real-world React + TypeScript application built through deliberate, incremental engineering.
 
-DevTasker is a task‑management app built with **React + Vite**.  
-Its purpose is educational — to master React by building a real, evolving application through **iteration, refactoring, and architectural improvement**.
+## 📘 Overview
+DevTasker is a task management app built using **React 19**, **TypeScript**, and **Vite**. It serves as a professional, evolving codebase focused on hands-on learning, architectural clarity, and production-quality engineering practices.
 
-This is not a tutorial project.  
-It’s a real codebase built the way professional React engineers work every day.
+This is not a tutorial repo. It is a real system built the way senior React engineers structure and grow applications through:
+- Iterative improvements
+- Refactoring
+- Clean architecture
+- Domain-driven design patterns
+- Practical TypeScript usage
 
 ---
 
-# 🎯 Goals of the Project
-
+## 🎯 Project Goals
 DevTasker exists to help you:
 
-- Learn React by building a real system, not copying snippets  
-- Understand React concepts in their natural context  
-- Practice component-driven UI architecture  
-- Build maintainable, scalable front‑end code  
-- Learn state, effects, reactivity, and rendering deeply  
-- Gain confidence using custom hooks and clean domain patterns  
-
-This project grows over time — just like real software.
+- Learn modern React by building a real, growing application
+- Understand concepts in context—not in isolation
+- Write scalable, maintainable front-end architecture
+- Master React hooks and custom domain hooks
+- Gain confidence with TypeScript in real components and logic flows
+- Practice separation of concerns across UI, domain, storage, and utils
 
 ---
 
-# 🚀 Current Feature Set
-
+## 🚀 Current Feature Set
 ### ✔ Tasks
-- Add a task  
-- Toggle completion  
-- Delete a task  
-- Prevent duplicate titles (case‑insensitive)  
-- Guard against empty titles  
+- Add new tasks
+- Toggle completion
+- Delete tasks
+- Prevent empty titles
+- Prevent duplicates (case-insensitive)
 
 ### ✔ Persistence
-- Full persistence through `localStorage`  
-- Storage is abstracted via a clean `useStorage` hook  
-- Domain-specific `useTaskStorage` hook  
+- Persistent storage via `localStorage`
+- Abstracted through a typed `useStorage<T>` hook
+- `useTaskStorage()` provides a typed `Task[]` interface
 
 ### ✔ Architecture
-- `useTasks` domain hook for business logic  
-- UI components are pure and presentation-focused  
-- Clean separation between:
-  - **UI layer**
-  - **domain layer**
-  - **storage layer**
-  - **utils layer**
-- Stable handlers (via `useCallback`)  
-- Optimized rendering with React.memo  
-- Centralized domain rules
-- Normalized IDs and titles
+- **UI Layer** — pure, dumb components (`TaskInput`, `TaskList`, `TaskItem`, `TasksSection`)
+- **Domain Layer** — business logic via `useTasks()`
+- **Storage Layer** — localStorage driver + hooks (`useStorage`, `useTaskStorage`)
+- **Utils Layer** — normalization, ID handling, validation helpers
+- **Constants Layer** — typed domain constants & error messaging
+- Strong TypeScript typing across all layers
+- Predictable state transitions & validation
+- Clean split between container components and presentational components
 
 ### ✔ Accessibility & UX
-- Semantic `<ul>` / `<li>` structure  
-- Accessible ARIA labels  
-- Safe quote‑escaping for screen readers  
-- Form and button behavior aligned with standards  
+- Semantic `<ul>` / `<li>` markup
+- Appropriate ARIA labels
+- Screen‑reader‑safe title escaping
+- Buttons and forms follow standard behavior
 
 ---
 
-# 🧱 Project Architecture
-
+## 🧱 Project Structure (Updated for TypeScript)
 ```
 src/
   components/
-    TaskInput.jsx
+    TaskInput.tsx
     TaskInput.css
-    TaskItem.jsx
-    TaskList.jsx
+    TaskItem.tsx
+    TaskList.tsx
     TaskList.css
+    TasksSection.tsx
+
+  pages/
+    TasksPage.tsx
 
   hooks/
-    useStorage.js
-    useTaskStorage.js
-    useTasks.js
+    useStorage.ts
+    useTaskStorage.ts
+    useTasks.ts
 
   domain/
-    taskExists.js
-    ensureValidId.js
-    taskTitleExists.js
+    task.ts
+    taskExists.ts
+    ensureValidId.ts
+    taskTitleExists.ts
 
   constants/
-    storage.js
-    taskReasons.js
+    storage.ts
+    taskReasons.ts
+    taskErrors.ts
 
   utils/
-    id.js
-    normalizeId.js
-    taskNormalization.js
+    id.ts
+    normalizeId.ts
+    taskNormalization.ts
 
   storage/
-    storage.js
+    storage.ts
 
-  App.jsx
+  App.tsx
   App.css
   index.css
+  main.tsx
+  vite-env.d.ts
 ```
 
 ---
 
-# 🧠 Conventions
+## 🧠 Conventions
+### 1. **Pragmatic Hooks Policy**
+- Static imports treated as stable
+- `useCallback(fn, [])` permitted where appropriate
+- Only necessary reactive dependencies included
+- ESLint exhaustive‑deps intentionally relaxed
 
-### 1. Pragmatic Hooks Policy
-- Static imports are stable.
-- `useCallback(fn, [])` allowed.
-- Only reactive deps required.
-- ESLint hook-deps rules intentionally ignored.
+### 2. **Clean Architecture Rules**
+- UI components remain pure/dumb
+- Business logic lives exclusively in domain hooks
+- Storage abstracted behind adapter hooks
+- Small, composable files
+- Predictable data flow
 
-### 2. Clean Architecture
-Small files, single responsibility, domain logic kept out of UI.
+### 3. **TypeScript Standards**
+- Strong, minimal types
+- Domain models defined once (`Task`)
+- Union types for domain errors (`TaskReason`)
+- Typed domain result objects
+- Type-safe storage API
 
-### 3. Arrow Functions Preferred
-Used unless there is a strong reason not to.
-
-### 4. One Issue at a Time
-Development proceeds through deliberate incremental improvements.
-
----
-
-# 📚 What Has Been Learned So Far
-- JSX, components, props  
-- Controlled inputs  
-- Lists, keys, reconciliation  
-- Memoization and render optimization  
-- Custom hooks (generic + domain-specific)  
-- Avoiding stale closures  
-- Layered architecture (UI → Domain → Storage)  
-- Domain rules for normalization & validation
-- Accessibility best practices  
+### 4. **Development Workflow**
+- One issue at a time
+- Incremental refinement
+- Refactor when needed, not prematurely
 
 ---
 
-# 🛠 Tech Stack
-- React 18+  
-- Vite  
-- JavaScript (ES202x)  
-- CSS  
-- localStorage (abstracted via hooks)  
+## 📚 What Has Been Learned So Far
+- Modern React component architecture
+- Controlled forms
+- Lists, keys, reconciliation
+- Memoization and render optimization
+- Custom hooks (generic + domain-specific)
+- Avoiding stale closures
+- Domain-driven UI design
+- Full TypeScript migration of a React codebase
+- Separation of concerns across layers
+- Accessibility best practices
 
 ---
 
-# 🏗 Future Roadmap
+## 🛠 Tech Stack
+- **React 19**
+- **TypeScript**
+- **Vite 7**
+- **CSS**
+- **localStorage persistence**
+- **nanoid** for ID generation
 
+---
+
+## 🏗 Future Roadmap
 ### Phase 3 — Async Logic
-- Replace localStorage with backend
-- Loading & error handling
+- Migrate from localStorage to real backend
+- Loading/error states
 - Optimistic updates
 
 ### Phase 4 — Routing
-- Multi-page layout
-- Task detail pages
+- Multi-page architecture
 - Settings page
+- Task detail views
 
 ### Phase 5 — Global State
 - Context API
-- Optional Zustand
+- Optional Zustand integration
 
-### Phase 6 — UI/UX
-- Filters, sorting, inline editing, animations
+### Phase 6 — UI/UX Enhancements
+- Filters & sorting
+- Inline editing
+- Animations
 
 ### Phase 7 — Deployment
-- Production build
+- Production builds
 - Deploy to Vercel/Netlify
 
 ---
 
-# ▶ Running the Project
-
+## ▶ Running the Project
 ```
-npm install
+pm install
 npm run dev
 ```
-
-Open at: http://localhost:5173/
+Visit: http://localhost:5173/
 
 ---
 
-# 🌟 Philosophy
+## 🌟 Philosophy
 **Build something real. Break it. Fix it. Refactor it. Understand it deeply.**

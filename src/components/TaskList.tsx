@@ -1,8 +1,15 @@
 import React from 'react'
 import './TaskList.css'
 import TaskItem from './TaskItem'
+import type { Task } from "../domain/task";
 
-const TaskList = ({ tasks, onToggle, onDelete }) => {
+type TaskListProps = {
+  tasks: Task[];
+  onToggle: (id: string) => unknown;
+  onDelete: (id: string) => unknown;
+};
+
+const TaskList = ({ tasks, onToggle, onDelete }: TaskListProps) => {
   return (
     <ul className="task-list">
       {tasks.length === 0 ? (

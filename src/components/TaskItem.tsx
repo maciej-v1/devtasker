@@ -1,6 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from "react";
+import type { Task } from "../domain/task";
 
-const TaskItem = ({ task, onToggle, onDelete }) => {
+type TaskItemProps = {
+  task: Task;
+  onToggle: (id: string) => unknown;
+  onDelete: (id: string) => unknown;
+};
+
+const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
   const handleToggle = useCallback(() => {
     onToggle(task.id);
   }, [task.id, onToggle]);
