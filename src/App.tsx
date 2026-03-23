@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import TasksPage from './pages/TasksPage';
 
 const App = () => {
@@ -6,7 +6,7 @@ const App = () => {
     <main className="app">
       <TasksPage />
     </main>
-  )
-}
+  );
+};
 
 export default App;

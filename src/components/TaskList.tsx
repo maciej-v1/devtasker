@@ -1,7 +1,7 @@
-import React from 'react'
-import './TaskList.css'
-import TaskItem from './TaskItem'
-import type { Task } from "../domain/task";
+import React from 'react';
+import './TaskList.css';
+import TaskItem from './TaskItem';
+import type { Task } from '../domain/task';
 
 type TaskListProps = {
   tasks: Task[];
@@ -18,16 +18,11 @@ const TaskList = ({ tasks, onToggle, onDelete }: TaskListProps) => {
         </li>
       ) : (
         tasks.map(task => (
-          <TaskItem
-            key={task.id}
-            task={task}
-            onToggle={onToggle}
-            onDelete={onDelete}
-          />
+          <TaskItem key={task.id} task={task} onToggle={onToggle} onDelete={onDelete} />
         ))
       )}
     </ul>
-  )
-}
+  );
+};
 
-export default React.memo(TaskList)
+export default React.memo(TaskList);

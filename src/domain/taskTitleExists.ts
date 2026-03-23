@@ -1,5 +1,5 @@
-import { normalizeForComparison } from "../utils/taskNormalization";
-import type { Task } from "./task";
+import { normalizeForComparison } from '../utils/taskNormalization';
+import type { Task } from './task';
 
 export const taskTitleExists = (tasks: Task[], rawTitle: string): boolean => {
   const target = normalizeForComparison(rawTitle);

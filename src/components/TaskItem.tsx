@@ -1,5 +1,5 @@
-import React, { useCallback } from "react";
-import type { Task } from "../domain/task";
+import React, { useCallback } from 'react';
+import type { Task } from '../domain/task';
 
 type TaskItemProps = {
   task: Task;
@@ -19,11 +19,7 @@ const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
   const safeTitle = task.title.replace(/"/g, '\\"');
 
   return (
-    <li
-      role="listitem"
-      className="task-item"
-      data-task-id={task.id}
-    >
+    <li role="listitem" className="task-item" data-task-id={task.id}>
       <input
         type="checkbox"
         checked={task.done}
@@ -31,9 +27,7 @@ const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
         aria-label={`Mark "${safeTitle}" as ${task.done ? 'todo' : 'done'}`}
       />
 
-      <span className={`task-title${task.done ? ' done' : ''}`}>
-        {task.title}
-      </span>
+      <span className={`task-title${task.done ? ' done' : ''}`}>{task.title}</span>
 
       <button type="button" className="task-delete" onClick={handleDelete}>
         Delete

@@ -1,4 +1,3 @@
-
 import { useTasks } from '../hooks/useTasks';
 import TasksSection from '../components/TasksSection';
 
@@ -12,7 +11,7 @@ const TasksPage = () => {
       onToggleTask={actions.toggleTask}
       onDeleteTask={actions.deleteTask}
     />
-  )
-}
+  );
+};
 
 export default TasksPage;

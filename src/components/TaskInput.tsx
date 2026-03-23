@@ -1,28 +1,23 @@
-import React, { useState, useCallback } from "react";
-import "./TaskInput.css";
-import { ERROR_MESSAGES } from "../constants/taskErrors";
-import type { Task } from "../domain/task";
-import type { TaskReason } from "../constants/taskReasons"
+import React, { useState, useCallback } from 'react';
+import './TaskInput.css';
+import { ERROR_MESSAGES } from '../constants/taskErrors';
+import type { Task } from '../domain/task';
+import type { TaskReason } from '../constants/taskReasons';
 
-type AddResult =
-  | { ok: true; task: Task }
-  | { ok: false; reason: TaskReason };
+type AddResult = { ok: true; task: Task } | { ok: false; reason: TaskReason };
 
 type TaskInputProps = {
   onAdd: (title: string) => AddResult;
 };
 
 const TaskInput = ({ onAdd }: TaskInputProps) => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [error, setError] = useState<{ message: string } | null>(null);
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTitle(e.target.value);
-      setError(null);
-    },
-    []
-  );
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    setError(null);
+  }, []);
 
   const submit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,15 +26,15 @@ const TaskInput = ({ onAdd }: TaskInputProps) => {
       const result = onAdd(title);
 
       if (result?.ok) {
-        setTitle("");
+        setTitle('');
         setError(null);
       } else {
         setError({
-          message: ERROR_MESSAGES[result.reason] ?? ERROR_MESSAGES.unknown
+          message: ERROR_MESSAGES[result.reason] ?? ERROR_MESSAGES.unknown,
         });
       }
     },
-    [onAdd, title]
+    [onAdd, title],
   );
 
   return (

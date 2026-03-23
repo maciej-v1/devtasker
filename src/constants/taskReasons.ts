@@ -4,4 +4,4 @@ export const TASK_REASONS = {
   NOT_FOUND: 'not_found',
 } as const;
 
-export type TaskReason = typeof TASK_REASONS[keyof typeof TASK_REASONS];
+export type TaskReason = (typeof TASK_REASONS)[keyof typeof TASK_REASONS];

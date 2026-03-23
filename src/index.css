@@ -1,10 +1,21 @@
 /* --- Reset / Base --- */
-*, *::before, *::after { box-sizing: border-box; }
-* { margin: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
 
-html, body { height: 100%; }
+html,
+body {
+  height: 100%;
+}
 
-html { font-size: 16px; }
+html {
+  font-size: 16px;
+}
 
 body {
   line-height: 1.5;
@@ -14,5 +25,17 @@ body {
   color: #222;
 }
 
-img, picture, video, canvas, svg { display: block; max-width: 100%; }
-button, input, textarea, select { font: inherit; }
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}

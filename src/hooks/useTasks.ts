@@ -1,21 +1,16 @@
-import { useCallback } from "react";
-import { useTaskStorage } from "./useTaskStorage";
-import {
-  normalizeTitle,
-  isEmptyTitle,
-} from "../utils/taskNormalization";
-import { createId } from "../utils/id";
-import { TASK_REASONS } from "../constants/taskReasons";
-import { taskExists } from "../domain/taskExists";
-import { ensureValidId } from "../domain/ensureValidId";
-import { taskTitleExists } from "../domain/taskTitleExists";
+import { useCallback } from 'react';
+import { useTaskStorage } from './useTaskStorage';
+import { normalizeTitle, isEmptyTitle } from '../utils/taskNormalization';
+import { createId } from '../utils/id';
+import { TASK_REASONS } from '../constants/taskReasons';
+import { taskExists } from '../domain/taskExists';
+import { ensureValidId } from '../domain/ensureValidId';
+import { taskTitleExists } from '../domain/taskTitleExists';
 
-import type { Task } from "../domain/task";
-import type { TaskReason } from "../constants/taskReasons";
+import type { Task } from '../domain/task';
+import type { TaskReason } from '../constants/taskReasons';
 
-type TaskActionResult =
-  | { ok: true; task: Task }
-  | { ok: false; reason: TaskReason };
+type TaskActionResult = { ok: true; task: Task } | { ok: false; reason: TaskReason };
 
 export const useTasks = () => {
   const [tasks, setTasks] = useTaskStorage();
@@ -23,8 +18,7 @@ export const useTasks = () => {
   const addTask = useCallback(
     (title: string): TaskActionResult => {
       const trimmed = normalizeTitle(title);
-      if (isEmptyTitle(trimmed))
-        return { ok: false, reason: TASK_REASONS.EMPTY };
+      if (isEmptyTitle(trimmed)) return { ok: false, reason: TASK_REASONS.EMPTY };
 
       if (taskTitleExists(tasks, trimmed)) {
         return { ok: false, reason: TASK_REASONS.DUPLICATE };
@@ -32,11 +26,11 @@ export const useTasks = () => {
 
       const newTask: Task = { id: createId(), title: trimmed, done: false };
 
-      setTasks((tasks) => [...tasks, newTask]);
+      setTasks(tasks => [...tasks, newTask]);
 
       return { ok: true, task: newTask };
     },
-    [tasks]
+    [tasks],
   );
 
   const toggleTask = useCallback(
@@ -49,19 +43,19 @@ export const useTasks = () => {
 
       let updatedTask: Task | undefined;
 
-      setTasks((tasks) =>
-        tasks.map((task) => {
+      setTasks(tasks =>
+        tasks.map(task => {
           if (task.id === targetId) {
             updatedTask = { ...task, done: !task.done };
             return updatedTask;
           }
           return task;
-        })
+        }),
       );
 
       return { ok: true, task: updatedTask! };
     },
-    [tasks]
+    [tasks],
   );
 
   const deleteTask = useCallback(
@@ -74,8 +68,8 @@ export const useTasks = () => {
 
       let removedTask: Task | undefined;
 
-      setTasks((tasks) => {
-        return tasks.filter((task) => {
+      setTasks(tasks => {
+        return tasks.filter(task => {
           const match = task.id === targetId;
           if (match) removedTask = task;
           return !match;
@@ -84,7 +78,7 @@ export const useTasks = () => {
 
       return { ok: true, task: removedTask! };
     },
-    [tasks]
+    [tasks],
   );
 
   const actions = { addTask, toggleTask, deleteTask };
