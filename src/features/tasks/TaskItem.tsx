@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import type { Task } from '../domain/task';
+import type { Task } from '../../domain/task';
+import './TaskItem.css';
 
 type TaskItemProps = {
   task: Task;
@@ -10,11 +11,11 @@ type TaskItemProps = {
 const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
   const handleToggle = useCallback(() => {
     onToggle(task.id);
-  }, [task.id, onToggle]);
+  }, []);
 
   const handleDelete = useCallback(() => {
     onDelete(task.id);
-  }, [task.id, onDelete]);
+  }, []);
 
   const safeTitle = task.title.replace(/"/g, '\\"');
 
@@ -27,9 +28,9 @@ const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
         aria-label={`Mark "${safeTitle}" as ${task.done ? 'todo' : 'done'}`}
       />
 
-      <span className={`task-title${task.done ? ' done' : ''}`}>{task.title}</span>
+      <span className={`task-item-title${task.done ? ' done' : ''}`}>{task.title}</span>
 
-      <button type="button" className="task-delete" onClick={handleDelete}>
+      <button type="button" className="task-item-delete" onClick={handleDelete}>
         Delete
       </button>
     </li>

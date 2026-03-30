@@ -1,10 +1,10 @@
 import './App.css';
-import TasksPage from './pages/TasksPage';
+import AppContent from './AppContent';
 
 const App = () => {
   return (
     <main className="app">
-      <TasksPage />
+      <AppContent />
     </main>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import './TaskInput.css';
-import { ERROR_MESSAGES } from '../constants/taskErrors';
-import type { Task } from '../domain/task';
-import type { TaskReason } from '../constants/taskReasons';
+import { ERROR_MESSAGES } from '../../constants/taskErrors';
+import type { Task } from '../../domain/task';
+import type { TaskReason } from '../../constants/taskReasons';
 
 type AddResult = { ok: true; task: Task } | { ok: false; reason: TaskReason };
 

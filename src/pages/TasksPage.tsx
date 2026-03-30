@@ -1,17 +1,7 @@
-import { useTasks } from '../hooks/useTasks';
-import TasksSection from '../components/TasksSection';
+import TasksController from '../features/tasks/TasksController';
 
 const TasksPage = () => {
-  const { tasks, actions } = useTasks();
-
-  return (
-    <TasksSection
-      tasks={tasks}
-      onAddTask={actions.addTask}
-      onToggleTask={actions.toggleTask}
-      onDeleteTask={actions.deleteTask}
-    />
-  );
+  return <TasksController />;
 };
 
 export default TasksPage;

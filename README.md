@@ -69,13 +69,17 @@ DevTasker exists to help you:
 
 ```
 src/
-  components/
-    TaskInput.tsx
-    TaskInput.css
-    TaskItem.tsx
-    TaskList.tsx
-    TaskList.css
-    TasksSection.tsx
+  features/
+    tasks/
+      TaskItem.tsx
+      TaskItem.css
+      TaskList.tsx
+      TaskList.css
+      TaskInput.tsx
+      TaskInput.css
+      TasksSection.tsx
+      TasksSection.css
+      TasksController.tsx
 
   pages/
     TasksPage.tsx
