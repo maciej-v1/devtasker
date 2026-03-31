@@ -1,13 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import styles from './TaskInput.module.css';
 import { ERROR_MESSAGES } from '../../constants/taskErrors';
-import type { Task } from '../../domain/task';
-import type { TaskReason } from '../../constants/taskReasons';
-
-type AddResult = { ok: true; task: Task } | { ok: false; reason: TaskReason };
+import type { TaskActionResult } from '../../domain/task';
 
 type TaskInputProps = {
-  onAdd: (title: string) => AddResult;
+  onAdd: (title: string) => TaskActionResult;
 };
 
 const TaskInput = ({ onAdd }: TaskInputProps) => {

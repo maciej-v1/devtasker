@@ -1,11 +1,8 @@
 import TaskInput from './TaskInput';
 import TaskList from './TaskList';
 import type { Task } from '../../domain/task';
-import type { TaskReason } from '../../constants/taskReasons';
+import type { TaskActionResult } from '../../domain/task';
 import styles from './TasksSection.module.css';
-
-// This matches the domain return type from useTasks
-type TaskActionResult = { ok: true; task: Task } | { ok: false; reason: TaskReason };
 
 type TasksSectionProps = {
   tasks: Task[];
