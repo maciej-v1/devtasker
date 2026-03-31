@@ -1,15 +1,15 @@
-.task-input {
+.taskInput {
   margin-bottom: 1rem;
 }
 
-.task-input-field {
+.taskInputField {
   flex: 1;
   padding: 0.5rem 0.75rem;
   border: 1px solid #bbb;
   border-radius: 6px;
 }
 
-.task-input-add {
+.taskInputAdd {
   background: #2d7df4;
   color: #fff;
   border: 1px solid transparent;
@@ -18,17 +18,17 @@
   cursor: pointer;
 }
 
-.task-input-add:hover {
+.taskInputAdd:hover {
   background: #1f5ec0;
 }
 
-.task-input-row {
+.taskInputRow {
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-.task-input-error {
+.taskInputError {
   color: #d9534f; /* Bootstrap-like red */
   font-size: 0.85rem;
   margin-top: 4px;

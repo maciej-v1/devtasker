@@ -1,4 +1,4 @@
-.task-item {
+.taskItem {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -6,11 +6,11 @@
   border-bottom: 1px solid #e9e9e9;
 }
 
-.task-item:last-child {
+.taskItem:last-child {
   border-bottom: none;
 }
 
-.task-item-title {
+.taskItemTitle {
   flex: 1;
 }
 
@@ -19,7 +19,7 @@
   color: #777;
 }
 
-.task-item-delete {
+.taskItemDelete {
   background: #d9534f;
   color: #fff;
   border: 1px solid transparent;
@@ -28,6 +28,6 @@
   cursor: pointer;
 }
 
-.task-item-delete:hover {
+.taskItemDelete:hover {
   background: #b52b27;
 }
