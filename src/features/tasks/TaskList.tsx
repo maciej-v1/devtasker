@@ -1,14 +1,18 @@
 import React from 'react';
-import styles from './TaskList.module.css';
-import TaskItem from './TaskItem';
 import type { Task } from '../../domain/task';
+import TaskItem from './TaskItem';
+import styles from './TaskList.module.css';
 
 type TaskListProps = {
   tasks: Task[];
-  onToggle: (id: string) => unknown;
-  onDelete: (id: string) => unknown;
+  /** Toggle handlers return values are ignored today, but typing as `void` keeps call sites honest. */
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
 };
 
+/**
+ * Renders the collection as a semantic list (`ul`/`li`) for accessibility and predictable focus order.
+ */
 const TaskList = ({ tasks, onToggle, onDelete }: TaskListProps) => {
   return (
     <ul className={styles.taskList}>

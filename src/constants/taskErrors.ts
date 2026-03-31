@@ -1,3 +1,6 @@
+/**
+ * User-facing strings keyed by `TaskReason`. `unknown` covers unexpected unions during refactors.
+ */
 export const ERROR_MESSAGES = {
   empty: 'Task title cannot be empty.',
   duplicate: 'That task already exists.',

@@ -1,3 +1,7 @@
+/**
+ * Machine-readable failure/success signals from domain actions.
+ * UI maps these to human copy in `taskErrors.ts` so wording can evolve independently.
+ */
 export const TASK_REASONS = {
   EMPTY: 'empty',
   DUPLICATE: 'duplicate',

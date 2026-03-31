@@ -1,7 +1,6 @@
 import TaskInput from './TaskInput';
 import TaskList from './TaskList';
-import type { Task } from '../../domain/task';
-import type { TaskActionResult } from '../../domain/task';
+import type { Task, TaskActionResult } from '../../domain/task';
 import styles from './TasksSection.module.css';
 
 type TasksSectionProps = {
@@ -11,6 +10,10 @@ type TasksSectionProps = {
   onDeleteTask: (id: string) => TaskActionResult;
 };
 
+/**
+ * Presentational slice: title, create form, and list. No storage or domain hooks here so you can
+ * reuse it in tests/stories with fake props.
+ */
 const TasksSection = ({ tasks, onAddTask, onToggleTask, onDeleteTask }: TasksSectionProps) => {
   return (
     <>

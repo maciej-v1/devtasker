@@ -1,12 +1,19 @@
-import React, { useState, useCallback } from 'react';
-import styles from './TaskInput.module.css';
+import React, { useCallback, useState } from 'react';
 import { ERROR_MESSAGES } from '../../constants/taskErrors';
 import type { TaskActionResult } from '../../domain/task';
+import styles from './TaskInput.module.css';
 
 type TaskInputProps = {
   onAdd: (title: string) => TaskActionResult;
 };
 
+/**
+ * Controlled input: React owns the value, so validation and clearing the field after success are easy.
+ *
+ * Why `useCallback` on `submit`?
+ * - Keeps a stable function identity when dependencies don’t change, which plays nicely with
+ *   memoized children and makes hook dependency arrays easier to reason about.
+ */
 const TaskInput = ({ onAdd }: TaskInputProps) => {
   const [title, setTitle] = useState('');
   const [error, setError] = useState<{ message: string } | null>(null);
@@ -22,7 +29,7 @@ const TaskInput = ({ onAdd }: TaskInputProps) => {
 
       const result = onAdd(title);
 
-      if (result?.ok) {
+      if (result.ok) {
         setTitle('');
         setError(null);
       } else {

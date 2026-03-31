@@ -1,224 +1,107 @@
 # DevTasker
 
-A real-world React + TypeScript application built through deliberate, incremental engineering.
+A **React 19 + TypeScript + Vite** task list used as a **learning codebase**: small enough to read in one sitting, structured like a maintainable app, and heavily commented so you can treat the source as notes.
 
-## 📘 Overview
+## Features
 
-DevTasker is a task management app built using **React 19**, **TypeScript**, and **Vite**. It serves as a professional, evolving codebase focused on hands-on learning, architectural clarity, and production-quality engineering practices.
+- Add tasks (non-empty title; duplicate titles blocked case-insensitively)
+- Toggle completion and delete tasks
+- Persistence via `localStorage`, behind a small storage adapter and hooks
+- **Domain-first transitions** (`tryAddTask` / `tryToggleTask` / `tryDeleteTask`) so rules are testable without the UI
+- Accessibility-minded list markup (`<ul>` / `<li>`, live region for empty state, labeled form controls)
 
-This is not a tutorial repo. It is a real system built the way senior React engineers structure and grow applications through:
+## Tech stack
 
-- Iterative improvements
-- Refactoring
-- Clean architecture
-- Domain-driven design patterns
-- Practical TypeScript usage
+| Layer        | Choice                          |
+| ------------ | ------------------------------- |
+| UI           | React 19, CSS Modules           |
+| Tooling      | Vite 7, TypeScript 5, ESLint 9  |
+| IDs          | `nanoid`                        |
+| Persistence  | Browser `localStorage` (JSON)   |
 
----
+## Project layout
 
-## 🎯 Project Goals
-
-DevTasker exists to help you:
-
-- Learn modern React by building a real, growing application
-- Understand concepts in context—not in isolation
-- Write scalable, maintainable front-end architecture
-- Master React hooks and custom domain hooks
-- Gain confidence with TypeScript in real components and logic flows
-- Practice separation of concerns across UI, domain, storage, and utils
-
----
-
-## 🚀 Current Feature Set
-
-### ✔ Tasks
-
-- Add new tasks
-- Toggle completion
-- Delete tasks
-- Prevent empty titles
-- Prevent duplicates (case-insensitive)
-
-### ✔ Persistence
-
-- Persistent storage via `localStorage`
-- Abstracted through a typed `useStorage<T>` hook
-- `useTaskStorage()` provides a typed `Task[]` interface
-
-### ✔ Architecture
-
-- **UI Layer** — pure, dumb components (`TaskInput`, `TaskList`, `TaskItem`, `TasksSection`)
-- **Domain Layer** — business logic via `useTasks()`
-- **Storage Layer** — localStorage driver + hooks (`useStorage`, `useTaskStorage`)
-- **Utils Layer** — normalization, ID handling, validation helpers
-- **Constants Layer** — typed domain constants & error messaging
-- Strong TypeScript typing across all layers
-- Predictable state transitions & validation
-- Clean split between container components and presentational components
-
-### ✔ Accessibility & UX
-
-- Semantic `<ul>` / `<li>` markup
-- Appropriate ARIA labels
-- Screen‑reader‑safe title escaping
-- Buttons and forms follow standard behavior
-
----
-
-## 🧱 Project Structure (Updated for TypeScript)
-
-```
+```text
 src/
-  features/
-    tasks/
-      TaskItem.tsx
-      TaskItem.css
-      TaskList.tsx
-      TaskList.css
-      TaskInput.tsx
-      TaskInput.css
-      TasksSection.tsx
-      TasksSection.css
-      TasksController.tsx
+  main.tsx                 # Entry: StrictMode + root mount
+  App.tsx                  # Page shell (layout)
+  AppContent.tsx           # App-level composition (future router lives here)
+  index.css                # Global base styles
 
   pages/
-    TasksPage.tsx
+    TasksPage.tsx          # “Route-sized” wrapper for the tasks feature
+
+  features/tasks/          # Vertical slice for tasks UI
+    TasksController.tsx    # Container: calls useTasks, passes props down
+    TasksSection.tsx       # Presentational section
+    TaskInput.tsx          # Controlled form + validation messages
+    TaskList.tsx           # List + empty state
+    TaskItem.tsx           # One row; memoized with correct hook deps
+    *.module.css
 
   hooks/
-    useStorage.ts
-    useTaskStorage.ts
-    useTasks.ts
+    useStorage.ts          # Generic localStorage + React state
+    useTaskStorage.ts      # Typed `Task[]` binding (stable empty default)
+    useTasks.ts            # Wires domain transitions to state updates
 
-  domain/
-    task.ts
+  domain/                  # Business rules (no React imports)
+    task.ts                # `Task`, `TaskActionResult`
+    taskTransitions.ts     # Pure “given prev state + intent → next + result”
     taskExists.ts
-    ensureValidId.ts
     taskTitleExists.ts
+    ensureValidId.ts
 
   constants/
-    storage.ts
-    taskReasons.ts
-    taskErrors.ts
-
-  utils/
-    id.ts
-    normalizeId.ts
-    taskNormalization.ts
+    storage.ts             # Storage key
+    taskReasons.ts         # Machine-readable reasons
+    taskErrors.ts          # User-visible error copy
 
   storage/
-    storage.ts
+    storage.ts             # load/save JSON + try/catch
 
-  App.tsx
-  App.css
-  index.css
-  main.tsx
-  vite-env.d.ts
+  utils/
+    id.ts                  # ID factory wrapper
+    normalizeId.ts
+    taskNormalization.ts   # Trim / empty / case-fold for comparison
 ```
 
----
+## Data flow (mental model)
 
-## 🧠 Conventions
+1. **UI** calls an action (e.g. submit title, toggle checkbox).
+2. **`useTasks`** runs a functional state update `setTasks(prev => …)` so it always sees the latest list.
+3. **`taskTransitions`** computes `{ next, result }` from `prev` in one place—no duplicated validation logic.
+4. **`useStorage`** persists on real changes (avoids writing immediately on first mount).
 
-### 1. **Pragmatic Hooks Policy**
+## How to read this repo as a learner
 
-- Static imports treated as stable
-- `useCallback(fn, [])` permitted where appropriate
-- Only necessary reactive dependencies included
-- ESLint exhaustive‑deps intentionally relaxed
+- Start at `src/features/tasks/TasksController.tsx` and follow props into `TasksSection` → `TaskInput` / `TaskList`.
+- Open `src/domain/taskTransitions.ts` next—this is where “what should happen?” is answered in plain TypeScript.
+- Compare with `src/hooks/useTasks.ts` to see how React state wraps those pure functions.
 
-### 2. **Clean Architecture Rules**
+Inline comments explain **why** a pattern exists (not just **what** the syntax does). JSDoc on exported helpers points at trade-offs (e.g. stable default arrays, functional `setState`).
 
-- UI components remain pure/dumb
-- Business logic lives exclusively in domain hooks
-- Storage abstracted behind adapter hooks
-- Small, composable files
-- Predictable data flow
+## Scripts
 
-### 3. **TypeScript Standards**
-
-- Strong, minimal types
-- Domain models defined once (`Task`)
-- Union types for domain errors (`TaskReason`)
-- Typed domain result objects
-- Type-safe storage API
-
-### 4. **Development Workflow**
-
-- One issue at a time
-- Incremental refinement
-- Refactor when needed, not prematurely
-
----
-
-## 📚 What Has Been Learned So Far
-
-- Modern React component architecture
-- Controlled forms
-- Lists, keys, reconciliation
-- Memoization and render optimization
-- Custom hooks (generic + domain-specific)
-- Avoiding stale closures
-- Domain-driven UI design
-- Full TypeScript migration of a React codebase
-- Separation of concerns across layers
-- Accessibility best practices
-
----
-
-## 🛠 Tech Stack
-
-- **React 19**
-- **TypeScript**
-- **Vite 7**
-- **CSS**
-- **localStorage persistence**
-- **nanoid** for ID generation
-
----
-
-## 🏗 Future Roadmap
-
-### Phase 3 — Async Logic
-
-- Migrate from localStorage to real backend
-- Loading/error states
-- Optimistic updates
-
-### Phase 4 — Routing
-
-- Multi-page architecture
-- Settings page
-- Task detail views
-
-### Phase 5 — Global State
-
-- Context API
-- Optional Zustand integration
-
-### Phase 6 — UI/UX Enhancements
-
-- Filters & sorting
-- Inline editing
-- Animations
-
-### Phase 7 — Deployment
-
-- Production builds
-- Deploy to Vercel/Netlify
-
----
-
-## ▶ Running the Project
-
-```
-pm install
-npm run dev
+```bash
+npm install
+npm run dev       # http://localhost:5173/
+npm run build     # tsc --noEmit && vite build
+npm run typecheck # TypeScript only
+npm run lint      # ESLint (TS + react-hooks + Vite refresh rules)
+npm run format    # Prettier
 ```
 
-Visit: http://localhost:5173/
+## ESLint & quality gates
 
----
+- TypeScript sources are linted with `typescript-eslint` (flat config in `eslint.config.js`).
+- Production build runs **`tsc --noEmit` first**, so type errors fail the build—not only Vite’s transform step.
 
-## 🌟 Philosophy
+## Roadmap ideas (not implemented yet)
 
-**Build something real. Break it. Fix it. Refactor it. Understand it deeply.**
+- Real API / async loading & error UI  
+- Router (`react-router` or similar) once there is more than one page  
+- Filters, inline edit, tests (Vitest + React Testing Library)
+
+## License / project intent
+
+Private learning project; structure and comments are meant to stay approachable as the codebase grows.
