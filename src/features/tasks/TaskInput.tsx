@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import './TaskInput.css';
+import styles from './TaskInput.module.css';
 import { ERROR_MESSAGES } from '../../constants/taskErrors';
 import type { Task } from '../../domain/task';
 import type { TaskReason } from '../../constants/taskReasons';
@@ -38,20 +38,20 @@ const TaskInput = ({ onAdd }: TaskInputProps) => {
   );
 
   return (
-    <form className="task-input" onSubmit={submit}>
-      <div className="task-input-row">
+    <form className={styles.taskInput} onSubmit={submit}>
+      <div className={styles.taskInputRow}>
         <input
-          className="task-input-field"
+          className={styles.taskInputField}
           value={title}
           onChange={handleChange}
           placeholder="Add a task…"
           aria-label="Task title"
         />
-        <button className="task-input-add" type="submit">
+        <button className={styles.taskInputAdd} type="submit">
           Add
         </button>
       </div>
-      {error && <p className="task-input-error">{error.message}</p>}
+      {error && <p className={styles.taskInputError}>{error.message}</p>}
     </form>
   );
 };

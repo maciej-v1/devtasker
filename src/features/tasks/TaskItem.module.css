@@ -14,7 +14,7 @@
   flex: 1;
 }
 
-.task-item-title.done {
+.done {
   text-decoration: line-through;
   color: #777;
 }

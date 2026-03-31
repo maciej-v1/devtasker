@@ -1,9 +1,9 @@
-import './App.css';
+import styles from './App.module.css';
 import AppContent from './AppContent';
 
 const App = () => {
   return (
-    <main className="app">
+    <main className={styles.app}>
       <AppContent />
     </main>
   );
