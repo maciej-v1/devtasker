@@ -14,6 +14,4 @@ export type Task = {
  * Discriminated union returned by task actions: either success with a `task` snapshot,
  * or failure with a machine-readable `reason` the UI maps to copy via `ERROR_MESSAGES`.
  */
-export type TaskActionResult =
-  | { ok: true; task: Task }
-  | { ok: false; reason: TaskReason };
+export type TaskActionResult = { ok: true; task: Task } | { ok: false; reason: TaskReason };

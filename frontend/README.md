@@ -12,12 +12,12 @@ A **React 19 + TypeScript + Vite** task list used as a **learning codebase**: sm
 
 ## Tech stack
 
-| Layer        | Choice                          |
-| ------------ | ------------------------------- |
-| UI           | React 19, CSS Modules           |
-| Tooling      | Vite 7, TypeScript 5, ESLint 9  |
-| IDs          | `nanoid`                        |
-| Persistence  | Browser `localStorage` (JSON)   |
+| Layer       | Choice                         |
+| ----------- | ------------------------------ |
+| UI          | React 19, CSS Modules          |
+| Tooling     | Vite 7, TypeScript 5, ESLint 9 |
+| IDs         | `nanoid`                       |
+| Persistence | Browser `localStorage` (JSON)  |
 
 ## Project layout
 
@@ -98,8 +98,8 @@ npm run format    # Prettier
 
 ## Roadmap ideas (not implemented yet)
 
-- Real API / async loading & error UI  
-- Router (`react-router` or similar) once there is more than one page  
+- Real API / async loading & error UI
+- Router (`react-router` or similar) once there is more than one page
 - Filters, inline edit, tests (Vitest + React Testing Library)
 
 ## License / project intent

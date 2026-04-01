@@ -31,12 +31,7 @@ const TaskItem = ({ task, onToggle, onDelete }: TaskItemProps) => {
 
   return (
     <li role="listitem" className={styles.taskItem} data-task-id={task.id}>
-      <input
-        type="checkbox"
-        checked={task.done}
-        onChange={handleToggle}
-        aria-label={toggleLabel}
-      />
+      <input type="checkbox" checked={task.done} onChange={handleToggle} aria-label={toggleLabel} />
 
       <span className={`${styles.taskItemTitle} ${task.done ? styles.done : ''}`}>
         {task.title}
