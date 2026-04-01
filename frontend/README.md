@@ -1,14 +1,28 @@
-# DevTasker
+# DevTasker – Frontend
 
-A **React 19 + TypeScript + Vite** task list used as a **learning codebase**: small enough to read in one sitting, structured like a maintainable app, and heavily commented so you can treat the source as notes.
+This package contains the **React frontend** of the DevTasker project. It is intentionally designed as a **domain-first, offline-capable learning codebase**, with an emphasis on clarity, explicit data flow, and well-documented architectural decisions.
+
+> This README describes only the frontend. See the repository root README for a system-level overview, and the backend README for API details.
+
+## Purpose
+
+- Demonstrate a maintainable React architecture
+- Separate **domain logic**, **persistence**, and **UI concerns**
+- Support **offline-first** behavior with explicit synchronization
+- Serve as a readable learning reference, not just a demo app
 
 ## Features
 
 - Add tasks (non-empty title; duplicate titles blocked case-insensitively)
-- Toggle completion and delete tasks
-- Persistence via `localStorage`, behind a small storage adapter and hooks
-- **Domain-first transitions** (`tryAddTask` / `tryToggleTask` / `tryDeleteTask`) so rules are testable without the UI
-- Accessibility-minded list markup (`<ul>` / `<li>`, live region for empty state, labeled form controls)
+- Toggle completion, delete tasks
+- Inline architecture supporting future task title editing
+- Optimistic UI updates
+- **Offline-first support** via:
+  - `localStorage`
+  - explicit mutation queue
+  - backend replay on reconnect
+- Domain-first transitions (`tryAddTask`, `tryToggleTask`, `tryDeleteTask`)
+- Accessibility-minded markup (`<ul>` / `<li>`, labeled inputs, live regions)
 
 ## Tech stack
 
@@ -16,8 +30,8 @@ A **React 19 + TypeScript + Vite** task list used as a **learning codebase**: sm
 | ----------- | ------------------------------ |
 | UI          | React 19, CSS Modules          |
 | Tooling     | Vite 7, TypeScript 5, ESLint 9 |
-| IDs         | `nanoid`                       |
-| Persistence | Browser `localStorage` (JSON)  |
+| IDs         | nanoid                         |
+| Persistence | Browser localStorage (JSON)    |
 
 ## Project layout
 
@@ -25,60 +39,55 @@ A **React 19 + TypeScript + Vite** task list used as a **learning codebase**: sm
 src/
   main.tsx                 # Entry: StrictMode + root mount
   App.tsx                  # Page shell (layout)
-  AppContent.tsx           # App-level composition (future router lives here)
-  index.css                # Global base styles
+  AppContent.tsx           # App-level composition
+  index.css                # Global styles
 
   pages/
-    TasksPage.tsx          # “Route-sized” wrapper for the tasks feature
+    TasksPage.tsx          # Route-sized wrapper
 
-  features/tasks/          # Vertical slice for tasks UI
-    TasksController.tsx    # Container: calls useTasks, passes props down
+  features/tasks/
+    TasksController.tsx    # Container: connects hooks to UI
     TasksSection.tsx       # Presentational section
-    TaskInput.tsx          # Controlled form + validation messages
+    TaskInput.tsx          # Controlled input + validation
     TaskList.tsx           # List + empty state
-    TaskItem.tsx           # One row; memoized with correct hook deps
-    *.module.css
+    TaskItem.tsx           # Single task row
 
   hooks/
-    useStorage.ts          # Generic localStorage + React state
-    useTaskStorage.ts      # Typed `Task[]` binding (stable empty default)
-    useTasks.ts            # Wires domain transitions to state updates
+    useStorage.ts          # Generic localStorage binding
+    useTaskStorage.ts      # Storage + backend hydration + replay
+    useTasks.ts            # Domain transitions + side effects
 
-  domain/                  # Business rules (no React imports)
-    task.ts                # `Task`, `TaskActionResult`
-    taskTransitions.ts     # Pure “given prev state + intent → next + result”
+  domain/
+    task.ts                # Core domain types
+    taskTransitions.ts     # Pure domain logic
     taskExists.ts
     taskTitleExists.ts
     ensureValidId.ts
 
-  constants/
-    storage.ts             # Storage key
-    taskReasons.ts         # Machine-readable reasons
-    taskErrors.ts          # User-visible error copy
+  sync/
+    taskMutations.ts       # Mutation vocabulary
+    taskMutationQueue.ts   # Offline queue persistence
+    taskSync.ts            # Replay engine
 
-  storage/
-    storage.ts             # load/save JSON + try/catch
+  constants/
+    storage.ts             # Storage keys
+    taskReasons.ts         # Machine-readable failure reasons
+    taskErrors.ts          # User-visible messages
 
   utils/
-    id.ts                  # ID factory wrapper
-    normalizeId.ts
-    taskNormalization.ts   # Trim / empty / case-fold for comparison
+    id.ts                  # ID generation wrapper
+    taskNormalization.ts   # Trim / fold helpers
 ```
 
-## Data flow (mental model)
+## Mental model
 
-1. **UI** calls an action (e.g. submit title, toggle checkbox).
-2. **`useTasks`** runs a functional state update `setTasks(prev => …)` so it always sees the latest list.
-3. **`taskTransitions`** computes `{ next, result }` from `prev` in one place—no duplicated validation logic.
-4. **`useStorage`** persists on real changes (avoids writing immediately on first mount).
+1. UI invokes an action (add / toggle / delete).
+2. `useTasks` executes **pure domain transitions**.
+3. UI updates synchronously (optimistic).
+4. Persistence and backend effects run as side effects.
+5. Offline actions enqueue intent and replay later.
 
-## How to read this repo as a learner
-
-- Start at `src/features/tasks/TasksController.tsx` and follow props into `TasksSection` → `TaskInput` / `TaskList`.
-- Open `src/domain/taskTransitions.ts` next—this is where “what should happen?” is answered in plain TypeScript.
-- Compare with `src/hooks/useTasks.ts` to see how React state wraps those pure functions.
-
-Inline comments explain **why** a pattern exists (not just **what** the syntax does). JSDoc on exported helpers points at trade-offs (e.g. stable default arrays, functional `setState`).
+The UI never blocks on network activity.
 
 ## Scripts
 
@@ -86,22 +95,15 @@ Inline comments explain **why** a pattern exists (not just **what** the syntax d
 npm install
 npm run dev       # http://localhost:5173/
 npm run build     # tsc --noEmit && vite build
-npm run typecheck # TypeScript only
-npm run lint      # ESLint (TS + react-hooks + Vite refresh rules)
+npm run typecheck # Type-only checks
+npm run lint      # ESLint
 npm run format    # Prettier
 ```
 
-## ESLint & quality gates
+## Learning intent
 
-- TypeScript sources are linted with `typescript-eslint` (flat config in `eslint.config.js`).
-- Production build runs **`tsc --noEmit` first**, so type errors fail the build—not only Vite’s transform step.
+This codebase prefers **explicitness over cleverness**. Inline comments explain *why* a pattern exists, not just *what* it does. The frontend is meant to be read end-to-end.
 
-## Roadmap ideas (not implemented yet)
+## License
 
-- Real API / async loading & error UI
-- Router (`react-router` or similar) once there is more than one page
-- Filters, inline edit, tests (Vitest + React Testing Library)
-
-## License / project intent
-
-Private learning project; structure and comments are meant to stay approachable as the codebase grows.
+Private learning project.
