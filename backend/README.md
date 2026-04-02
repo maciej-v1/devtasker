@@ -13,12 +13,30 @@ This package contains the **Java backend** of the DevTasker project. It provides
 
 ## Tech stack
 
-| Layer        | Choice               |
-| ------------ | -------------------- |
-| Language     | Java 17              |
-| Framework    | Spring Boot          |
-| Persistence | JPA + H2 (dev mode)  |
-| Database     | PostgreSQL-ready     |
+| Layer        | Choice                 |
+| ------------ | ---------------------- |
+| Language     | Java 17                |
+| Framework    | Spring Boot            |
+| Persistence | JPA (Hibernate)        |
+| Database     | PostgreSQL (local dev) |
+
+## Database configuration
+
+The backend uses **PostgreSQL** for local development.
+
+Database configuration is **fully environment-variable driven** so that no secrets or machine-specific values are committed to the repository.
+
+The following environment variables are expected when running the backend locally:
+
+| Variable        | Description                         | Example        |
+| --------------- | ----------------------------------- | -------------- |
+| `DB_HOST`       | Database host                        | `localhost`    |
+| `DB_PORT`       | Database port                        | `5432`         |
+| `DB_NAME`       | Database name                        | `devtasker`    |
+| `DB_USER`       | Database user                        | `postgres`     |
+| `DB_PASSWORD`   | Database password                   | *(local only)* |
+
+These variables are referenced from `application-dev.yml` using Spring Boot placeholders.
 
 ## API overview
 
@@ -43,17 +61,24 @@ This package contains the **Java backend** of the DevTasker project. It provides
 
 ## Development notes
 
-- Uses **H2 in-memory database** by default
-- Database resets on backend restart (development behavior)
-- Designed so frontend can safely replay mutations
+- Uses **PostgreSQL** for persistence
+- Data **persists across backend restarts**
+- Schema is managed automatically by JPA in development mode
+- Designed so the frontend can safely replay mutations
 
 ## Local development
 
-```bash
-./mvnw spring-boot:run
+Local development is typically done using a **local run script** that:
+- Sets required environment variables
+- Starts the backend using Maven
+
+Example (Windows, not committed to Git):
+
+```cmd
+scripts\run-backend.cmd
 ```
 
-Backend will start on:
+The backend will start on:
 
 ```
 http://localhost:8080
@@ -64,6 +89,7 @@ http://localhost:8080
 - Backend is stateless aside from persistence
 - No business logic duplication with frontend domain layer
 - API accepts explicit intent, not derived state
+- Configuration is explicit and environment-driven
 
 ## License
 
