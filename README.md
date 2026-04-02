@@ -1,12 +1,13 @@
 # DevTasker
 
-DevTasker is a **full-stack, offline-first task management application** designed as a **learning project**. The goal is not just to build a working app, but to explore and document architectural decisions around domain logic, persistence, and synchronization.
+DevTasker is a **full-stack, offline-first task management application** designed as a **learning project**. The goal is not just to build a working app, but to explore and document architectural decisions around domain logic, persistence, configuration, and synchronization.
 
 ## Repository structure
 
 ```text
 frontend/   # React + TypeScript frontend
 backend/    # Spring Boot backend API
+scripts/    # Local-only run scripts (gitignored)
 ```
 
 Each subproject has its own README with detailed documentation.
@@ -28,14 +29,25 @@ Each subproject has its own README with detailed documentation.
 
 ## Technology overview
 
-| Layer     | Technology                      |
-| --------- | ------------------------------- |
-| Frontend | React 19, TypeScript, Vite      |
-| Backend  | Java, Spring Boot               |
-| Storage  | localStorage + REST + JPA       |
-| Sync     | Intent-based replay             |
+| Layer     | Technology                                      |
+| --------- | ----------------------------------------------- |
+| Frontend  | React 19, TypeScript, Vite                      |
+| Backend   | Java 17, Spring Boot                            |
+| Database  | PostgreSQL                                     |
+| Storage   | localStorage + REST + JPA                      |
+| Sync      | Intent-based replay                             |
 
-## Getting started (dev)
+## Configuration model
+
+This repository intentionally avoids committing secrets or machine-specific configuration.
+
+- **Secrets** (such as database passwords) are provided via **environment variables**
+- **Local run scripts** (not committed to Git) are used to set up the environment
+- Spring Boot configuration files reference environment variables via placeholders
+
+This approach keeps the repository safe, explicit, and production-aligned.
+
+## Getting started (development)
 
 ### Frontend
 
@@ -47,9 +59,20 @@ npm run dev
 
 ### Backend
 
-```bash
-cd backend
-./mvnw spring-boot:run
+The backend expects certain environment variables to be set (see `backend/README.md`).
+
+For local development, a local run script is typically used (for example, on Windows):
+
+```text
+scripts/run-backend.cmd
+```
+
+This script is intentionally **gitignored** and contains local-only configuration such as database credentials.
+
+The backend runs on:
+
+```text
+http://localhost:8080
 ```
 
 ## Learning focus
@@ -58,10 +81,10 @@ This project intentionally trades breadth for depth. It explores:
 
 - separation of concerns
 - optimistic UI updates
-- offline-first sync models
-- explicit error handling and data mapping
+- offline-first synchronization models
+- explicit persistence and configuration boundaries
 
-It is meant to be read slowly and thoughtfully.
+The codebase is meant to be read slowly and thoughtfully.
 
 ## License
 
